@@ -150,8 +150,6 @@
 	};
 </cfscript></cfsilent>
 <cfoutput>
-
-	<h3>#local.isPlaylist#</h3>
 	<div class="muraPlayerOuterWrapper">
 		<div id="#local.playerid#"></div>
 	</div>
