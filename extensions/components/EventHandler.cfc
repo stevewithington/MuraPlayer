@@ -407,7 +407,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 							'file' = local.file
 							,'image' = local.image
 							,'title' = local.item.getValue('title')
-							,'description' = local.item.getValue('summary')
+							,'description' = local.item.getValue('muraPlayerDescription')
 							,'link' = local.item.getURL(complete=true)
 							,'gapro.hidden' = local.item.getValue('muraPlayerGAProHidden')
 						}
