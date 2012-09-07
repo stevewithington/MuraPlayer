@@ -24,7 +24,7 @@
 <style type="text/css">
 	div.muraPlayerBodyWrap {width:650px;}
 	.muraPlayerBodyWrap h3{padding-top:1.5em;}
-	.muraPlayerBodyWrap h4{padding-top:1em;}
+	.muraPlayerBodyWrap h4, .muraPlayerBodyWrap h5{padding-top:1em;}
 	.muraPlayerBodyWrap ul{padding:0 0.75em;margin:0 0.75em;}
 </style>
 <cfsavecontent variable="body">
@@ -72,8 +72,33 @@
 				</ul>
 			</div>
 
+			<h3>Troubleshooting</h3>
+		
+			<h4>Upload Issues</h4>
+			<p>Please note, Mura CMS does NOT impose any kind of limit on your filesize uploads.  This means that if you're running into issues, there are probably limits being imposed by either your your CFML engine (e.g., Adobe ColdFusion, Railo, etc.), your webserver (IIS, apache, etc.), your web hosting company (e.g., software that they use to monitor their servers such as SeeFusion, etc.), your internet service provider (ISP), or possibly even your organization's network policies.  The point is, there's any nummber of places you may have to check.</p>
+			<p class="error"><strong>WARNING!!!</strong> Changing filesize post data is a security risk. For example, if someone wants to perform a Denial of Service (DOS) attack, you're just giving them an easy way to do it. So please keep this in mind before attempting to make any adjustments to default settings.</p>
+			<p>The information below is meant to help troubleshoot common problems with uploading large files.</p>
+
+			
+			<h5>ColdFusion Administrator</h5>
+			<p>Login to your ColdFusion Administrator, go to Server Settings > Settings. Scroll to the bottom of the page and check the <strong>Request Size Limits</strong> section. The very first item listed shoudl be <strong>Maximum size of post data</strong>. The default is 100MB.</p>
+			<p>If that doesn't work, you could attempt to increase your Timeout Requests setting (defaults to 60 seconds).</p>
+			<p>Finally, check your JVM memory settings. Here's some links that are somewhat related:</p>
+			<ul>
+				<li><a href="http://www.talkingtree.com/blog/index.cfm/2010/9/9/JVM-Memory-Management-and-ColdFusion-Log-Analysis">http://www.talkingtree.com/blog/index.cfm/2010/9/9/JVM-Memory-Management-and-ColdFusion-Log-Analysis</a></li>
+				<li><a href="http://www.petefreitag.com/articles/gctuning/">http://www.petefreitag.com/articles/gctuning/</a></li>
+			</ul>
+		
+			<h5>HTTP 404.13</h5>
+			<p>If you're getting a <strong>404.13 - Not Found</strong> error, then you're probably using Windows/IIS.  By default, IIS limits the maximum length of content in a request to 30000000 bytes (approximately 28.6MB). The links below may help resolve this issue:</p>
+			<ul>
+				<li><a href="http://www.iis.net/configreference/system.webserver/security/requestfiltering/requestlimits">Windows/IIS Request Limits</a></li>
+				<li><a href="http://support.microsoft.com/kb/942074">IIS 7 - HTTP Error 404.13</a></li>
+			</ul>
+		
+
 			<h3>Need help?</h3>
-			<p>Catch me on the <a href="http://www.getmura.com/forum/" target="_blank">Mura CMS forums</a>, contact me through my site at <a href="http://www.stephenwithington.com" target="_blank">www.stephenwithington.com</a>, or via email at steve [at] stephenwithington [dot] com.</p>
+			<p>If you're running into an issue, please let me know at <a href="https://github.com/stevewithington/MuraPlayer/issues">https://github.com/stevewithington/MuraPlayer/issues</a> and I'll try to address it as soon as I can.</p>
 			<p>Cheers!</p>
 		</div>
 	</cfoutput>
