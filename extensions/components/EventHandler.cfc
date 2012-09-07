@@ -68,6 +68,12 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		// Content Body
 		local.body = $.setDynamicContent($.content('body'));
 
+		// Skin
+		local.skin = $.content('muraPlayerSkin');
+		if ( local.skin == 'siteDefault' ) {
+			local.skin = $.siteConfig('muraPlayerSkinDefault');
+		};
+
 		// Width x Height
 		if ( $.content('muraPlayerDimensions') == 'default' ) {
 			local.width = ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x');
@@ -75,6 +81,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		} else {
 			local.width = ListFirst($.content('muraPlayerDimensions'), 'x');
 			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
+		};
+
+		if ( !ListFindNoCase('over,none', $.content('muraPlayerControlbarPosition')) ) {
+			local.height = local.height + getSkinHeight(local.skin);
 		};
 
 		// File
@@ -90,12 +100,6 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		// If media file is an image and no associated image exists, use media file
 		if ( !Len(Trim(local.image)) && ListFindNoCase('jpg,jpeg,png,gif', ListLast(local.file, '.')) ) {
 			local.image = local.file;
-		};
-
-		// Skin
-		local.skin = $.content('muraPlayerSkin');
-		if ( local.skin == 'siteDefault' ) {
-			local.skin = $.siteConfig('muraPlayerSkinDefault');
 		};
 
 		// Amazon CloudFront + Streaming
