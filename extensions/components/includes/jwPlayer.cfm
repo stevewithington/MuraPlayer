@@ -46,55 +46,7 @@
 	// sound file
 	if ( !len(trim(arguments.image)) && isSoundFile(arguments.file) ) {
 		// have to adjust the skin height if no image is used and file is 'sound'
-		switch( arguments.skin ) {
-			case 'beelden' :
-				arguments.height = 30;
-				break;
-			case 'bekle' :
-				arguments.height = 60;
-				break;
-			case 'classic' :
-				arguments.height = 20;
-				break;
-			case 'five' :
-				arguments.height = 24;
-				break;
-			case 'glow' :
-				arguments.height = 29;
-				break;
-			case 'lulu' :
-				arguments.height = 32;
-				break;
-			case 'minima' :
-				arguments.height = 24;
-				break;
-			case 'modieus' :
-				arguments.height = 30;
-				break;
-			case 'nacht' :
-				arguments.height = 24;
-				break;
-			case 'schoon' :
-				arguments.height = 34;
-				break;
-			case 'simple' :
-				arguments.height = 24;
-				break;
-			case 'slim' :
-				arguments.height = 19;
-				break;
-			case 'snel' :
-				arguments.height = 32;
-				break;
-			case 'stijl' :
-				arguments.height = 40;
-				break;
-			case 'stormtrooper' :
-				arguments.height = 25;
-				break;
-			default : 
-				arguments.height = 24;
-		};		
+		arguments.height = getSkinHeight(arguments.skin);	
 		arguments.controlbarposition = 'bottom';
 		arguments.dock = false;
 		arguments.icons = false;
@@ -177,6 +129,7 @@
 				description: "#HTMLEditFormat(arguments.description)#",
 				</cfif>
 				<cfif len(trim(arguments.streamer)) and arguments.streamer neq '/cfx/st'>
+				provider: "rtmp",
 				streamer: encodeURI("#arguments.streamer#"),
 				</cfif>
 				mediaid: "#arguments.mediaid#",
@@ -261,10 +214,7 @@
 						"size": "#arguments.flowsize#",
 					},
 					</cfif>
-
-					// EVENTS
-					events: {},
-				},
+				}, //@END plugins
 			}); // @END jwplayer
 		}); // @END jQuery
 	</script>

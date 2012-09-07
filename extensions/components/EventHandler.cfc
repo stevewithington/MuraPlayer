@@ -293,11 +293,11 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,lightsoutonplay='off'
 		,lightsoutonpause='on'
 		,lightsoutoncomplete='on'
-		,useclosedcaptions=false
-		,closedcaptionsback=true
-		,closedcaptionsfile=''
-		,closedcaptionsfontsize='14'
-		,closedcaptionsstate=false
+		,usecaptions=false
+		,captionsback=true
+		,captionsfile=''
+		,captionsfontsize='14'
+		,captionsstate=false
 		,useagegate=false
 		,agegateminage='18'
 		,agegatemaxage='100'
@@ -548,6 +548,58 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// HELPERS
 	// ---------------------------------------------------------------------
 
+	public any function getSkinHeight(string skin='') output=false {
+		switch( arguments.skin ) {
+			case 'beelden' :
+				return 30;
+				break;
+			case 'bekle' :
+				return 60;
+				break;
+			case 'classic' :
+				return 20;
+				break;
+			case 'five' :
+				return 24;
+				break;
+			case 'glow' :
+				return 29;
+				break;
+			case 'lulu' :
+				return 32;
+				break;
+			case 'minima' :
+				return 24;
+				break;
+			case 'modieus' :
+				return 30;
+				break;
+			case 'nacht' :
+				return 24;
+				break;
+			case 'schoon' :
+				return 34;
+				break;
+			case 'simple' :
+				return 24;
+				break;
+			case 'slim' :
+				return 19;
+				break;
+			case 'snel' :
+				return 32;
+				break;
+			case 'stijl' :
+				return 40;
+				break;
+			case 'stormtrooper' :
+				return 25;
+				break;
+			default : 
+				return 24;
+		};
+	}
+
 	/**
 	* To be used in a future version of the plugin
 	* @tables a comma-separated list of tables to backup OR leave blank to backup entire db.
@@ -646,13 +698,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 						local.baseurl = local.cloudurl;
 					};
 
-					// if a streamingurl exists and the file is flagged to be streamed, then let's stream it!
-					// there's a bug when trying to stream a .mp3 file, so for now, let's not allow streamining of .mp3 files
-					// example streamer: rtmp://s1mfyjqt84pznn.cloudfront.net or rtmp://stream.domain.com
-					local.streamurl = $.siteConfig('muraPlayerStreamURL');
-					if ( len(trim(local.streamurl)) && local.isstream ) {
-						// if streamingurl exists, we need to append '/cfx/st' to it for Amazon CloudFront streaming
-						local.streamer = local.streamurl & '/cfx/st';
+					if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
 						// we don't need to provide the full url if we're streaming since we're going to provide a streaming url instead
 						local.baseurl = '';
 					};
