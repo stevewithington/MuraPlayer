@@ -154,15 +154,6 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		// Content Body
 		local.body = $.setDynamicContent($.content('body'));
 
-		// Width x Height
-		if ( $.content('muraPlayerDimensions') == 'default' ) {
-			local.width = ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x');
-			local.height = ListLast($.siteConfig('muraPlayerDimensionsDefault'), 'x');
-		} else {
-			local.width = ListFirst($.content('muraPlayerDimensions'), 'x');
-			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
-		};
-
 		// MuraPlayersBean 
 		local.muraPlayersBean = getMuraPlayersBean(
 			sortBy=$.content('sortBy')
@@ -173,6 +164,23 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 			,parentContentID=$.content('contentid')
 		);
 
+		// Skin
+		local.skin = $.content('muraPlayerSkin');
+		if ( local.skin == 'siteDefault' ) {
+			local.skin = $.siteConfig('muraPlayerSkinDefault');
+		};
+
+		// Width x Height
+		if ( $.content('muraPlayerDimensions') == 'default' ) {
+			local.width = ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x');
+			local.height = ListLast($.siteConfig('muraPlayerDimensionsDefault'), 'x');
+		} else {
+			local.width = ListFirst($.content('muraPlayerDimensions'), 'x');
+			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
+		};
+
+		local.height = local.height + getSkinHeight(local.skin);
+
 		// Playlist
 		local.playlist = getJWPlaylist(
 			width=local.width
@@ -182,12 +190,6 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		// Image
 		local.image = $.getURLForImage(fileid=$.content('fileid'),width=local.width,height=local.height);
-
-		// Skin
-		local.skin = $.content('muraPlayerSkin');
-		if ( local.skin == 'siteDefault' ) {
-			local.skin = $.siteConfig('muraPlayerSkinDefault');
-		};
 
 		// Amazon CloudFront + Streaming
 		// we need to append '/cfx/st' to it for Amazon CloudFront streaming
