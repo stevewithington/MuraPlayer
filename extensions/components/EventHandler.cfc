@@ -293,11 +293,11 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,lightsoutonplay='off'
 		,lightsoutonpause='on'
 		,lightsoutoncomplete='on'
-		,useclosedcaptions=false
-		,closedcaptionsback=true
-		,closedcaptionsfile=''
-		,closedcaptionsfontsize='14'
-		,closedcaptionsstate=false
+		,usecaptions=false
+		,captionsback=true
+		,captionsfile=''
+		,captionsfontsize='14'
+		,captionsstate=false
 		,useagegate=false
 		,agegateminage='18'
 		,agegatemaxage='100'
@@ -547,6 +547,58 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// ---------------------------------------------------------------------
 	// HELPERS
 	// ---------------------------------------------------------------------
+
+	public any function getSkinHeight(string skin='') output=false {
+		switch( arguments.skin ) {
+			case 'beelden' :
+				return 30;
+				break;
+			case 'bekle' :
+				return 60;
+				break;
+			case 'classic' :
+				return 20;
+				break;
+			case 'five' :
+				return 24;
+				break;
+			case 'glow' :
+				return 29;
+				break;
+			case 'lulu' :
+				return 32;
+				break;
+			case 'minima' :
+				return 24;
+				break;
+			case 'modieus' :
+				return 30;
+				break;
+			case 'nacht' :
+				return 24;
+				break;
+			case 'schoon' :
+				return 34;
+				break;
+			case 'simple' :
+				return 24;
+				break;
+			case 'slim' :
+				return 19;
+				break;
+			case 'snel' :
+				return 32;
+				break;
+			case 'stijl' :
+				return 40;
+				break;
+			case 'stormtrooper' :
+				return 25;
+				break;
+			default : 
+				return 24;
+		};
+	}
 
 	/**
 	* To be used in a future version of the plugin
