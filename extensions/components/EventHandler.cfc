@@ -179,7 +179,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
 		};
 
-		local.height = local.height + getSkinHeight(local.skin);
+		if ( !ListFindNoCase('over,none', $.content('muraPlayerControlbarPosition')) ) {
+			local.height = local.height + getSkinHeight(local.skin);
+		};
 
 		// Playlist
 		local.playlist = getJWPlaylist(
