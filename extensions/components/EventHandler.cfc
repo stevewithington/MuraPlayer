@@ -579,11 +579,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public boolean function toBoolean(any arg='') output=false {
-		try {
-			return YesNoFormat(arguments.arg) ? true : false;
-		} catch(any e) {
-			return false;
-		};
+		return IsBoolean(arg) && arg ? true : false;
 	}
 
 	public any function isSoundFile(string file='') output=false {
@@ -646,13 +642,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 						local.baseurl = local.cloudurl;
 					};
 
-					// if a streamingurl exists and the file is flagged to be streamed, then let's stream it!
-					// there's a bug when trying to stream a .mp3 file, so for now, let's not allow streamining of .mp3 files
-					// example streamer: rtmp://s1mfyjqt84pznn.cloudfront.net or rtmp://stream.domain.com
-					local.streamurl = $.siteConfig('muraPlayerStreamURL');
-					if ( len(trim(local.streamurl)) && local.isstream ) {
-						// if streamingurl exists, we need to append '/cfx/st' to it for Amazon CloudFront streaming
-						local.streamer = local.streamurl & '/cfx/st';
+					if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
 						// we don't need to provide the full url if we're streaming since we're going to provide a streaming url instead
 						local.baseurl = '';
 					};

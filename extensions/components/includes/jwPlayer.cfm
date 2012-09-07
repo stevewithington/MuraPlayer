@@ -177,6 +177,7 @@
 				description: "#HTMLEditFormat(arguments.description)#",
 				</cfif>
 				<cfif len(trim(arguments.streamer)) and arguments.streamer neq '/cfx/st'>
+				provider: "rtmp",
 				streamer: encodeURI("#arguments.streamer#"),
 				</cfif>
 				mediaid: "#arguments.mediaid#",
@@ -261,9 +262,6 @@
 						"size": "#arguments.flowsize#",
 					},
 					</cfif>
-
-					// EVENTS
-					events: {},
 				},
 			}); // @END jwplayer
 		}); // @END jQuery
