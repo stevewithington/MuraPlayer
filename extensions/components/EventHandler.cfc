@@ -104,7 +104,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		// Amazon CloudFront + Streaming
 		// we need to append '/cfx/st' to it for Amazon CloudFront streaming
-		local.streamer = $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
+		local.streamer = 'rtmp://' & $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
 
 		// Player
 		local.player = dspJWPlayer(
@@ -197,13 +197,8 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		// Image
 		local.image = $.getURLForImage(fileid=$.content('fileid'),width=local.width,height=local.height);
 
-		// Amazon CloudFront + Streaming
-		// we need to append '/cfx/st' to it for Amazon CloudFront streaming
-		local.streamer = $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
-
 		local.player = dspJWPlayer(
 			playlist = local.playlist
-			,streamer = local.streamer
 			,mediaid = $.content('contentid')
 			,image = local.image
 			,width = local.width
@@ -327,7 +322,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,flowposition=''
 		,flowsize=''
 		,flashplayer=''
-		,streamer='#$.siteConfig('muraPlayerStreamURL')#/cfx/st'
+		,streamer='rtmp://#$.siteConfig('muraPlayerStreamURL')#/cfx/st'
 	) output=false {
 		var local = {};
 		if ( !Len(Trim(arguments.file)) && ( arguments.playlist == '[]' || arguments.playlist == '') ) {
@@ -392,7 +387,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 					// File
 					local.file = local.isYouTube
 						? local.item.getValue('muraPlayerYouTubeURL') 
-						: getFileURL(local.item.getValue('muraPlayerFile'));
+						: getFileURL(local.item.getValue('muraPlayerFile'), true);
 
 					// Image
 					local.image = $.getURLForImage(
@@ -665,7 +660,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		return ReReplace(arguments.str, '\b(\w)', '\u\1', 'ALL');
 	}
 
-	public string function getFileURL(string fileid='', string method='inline') output=false {
+	public string function getFileURL(string fileid='', string method='inline', boolean isForPlaylist=false) output=false {
 		var local = {};
 		local.fileURL = '';
 		local.rsFileData = getBean('fileManager').read(arguments.fileid);
@@ -693,16 +688,20 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 					local.baseurl	= getPageContext().getRequest().getScheme() & '://s3.amazonaws.com/' & ListLast($.globalConfig('fileStoreAccessInfo'),'^') & '/';
 
 					// if a cloudurl exists, let's use it
-					// example cloud url: http://cloud.domain.com
+					// example Amazon CloudFront Domain Name: d3uo0mcmxgzzlk.cloudfront.net
 					local.cloudurl = $.siteConfig('muraPlayerCloudURL');
-					if ( len(trim(local.cloudurl)) && IsValid('url', local.cloudurl) ) {
+					if ( len(trim(local.cloudurl)) ) {
+						// the cloudurl shouldn't contain http/https, but if it does, we don't want to add the scheme/protocol again.
+						if ( left(local.cloudurl, 4) != 'http' ) {
+							local.cloudurl = getPageContext().getRequest().getScheme() & '//' & local.cloudurl;
+						};
 						if ( right(local.cloudurl, 1) != '/' ) {
 							local.cloudurl = local.cloudurl & '/';
 						};
 						local.baseurl = local.cloudurl;
 					};
 
-					if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
+					if ( !arguments.isForPlaylist && len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
 						// we don't need to provide the full url if we're streaming since we're going to provide a streaming url instead
 						local.baseurl = '';
 					};

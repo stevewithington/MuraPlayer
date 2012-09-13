@@ -238,12 +238,16 @@
 					optionList="false^true"
 					optionLabelList="No^Yes" />
 
-				<cfif application.configBean.getValue('filestore') eq 'S3'>
+			</attributeset>
+
+			<cfif application.configBean.getValue('filestore') eq 'S3'>
+
+				<attributeset name="MuraPlayer Amazon CloudFront/Streaming Settings">
 
 					<attribute 
 						name="muraPlayerCloudURL"
-						label="Amazon CloudFront URL"
-						hint="If you have enabled Amazon CloudFront for your Amazon S3 account, then we can use it to optimize delivery of your media assets. For more information about Amazon CloudFront, please visit http://docs.amazonwebservices.com/AmazonCloudFront/latest/DeveloperGuide/"
+						label="Amazon CloudFront Domain Name"
+						hint="If you have enabled Amazon CloudFront for your Amazon S3 account, then we can use it to optimize delivery of your media assets. (e.g., d3uo0mcmxgzzlk.cloudfront.net) For more information about Amazon CloudFront, please visit http://docs.amazonwebservices.com/AmazonCloudFront/latest/DeveloperGuide/"
 						type="Text"
 						defaultValue=""
 						required="false"
@@ -255,8 +259,8 @@
 
 					<attribute 
 						name="muraPlayerStreamURL"
-						label="Amazon Streaming URL"
-						hint="Requires Amazon CloudFront along with your Amazon S3 account. For more information about creating streaming distributions via Amazon CloudFront, please visit http://docs.amazonwebservices.com/AmazonCloudFront/latest/DeveloperGuide/CreatingStreamingDistributions.html"
+						label="Amazon Streaming Domain Name"
+						hint="Requires Amazon CloudFront along with your Amazon S3 account. (e.g., s3td5ck0c1yomt.cloudfront.net)  For more information about creating streaming distributions via Amazon CloudFront, please visit http://docs.amazonwebservices.com/AmazonCloudFront/latest/DeveloperGuide/CreatingStreamingDistributions.html"
 						type="Text"
 						defaultValue=""
 						required="false"
@@ -266,9 +270,9 @@
 						optionList=""
 						optionLabelList="" />
 
-				</cfif>
+				</attributeset>
 
-			</attributeset>
+			</cfif>
 
 			<attributeset name="MuraPlayer Google Analytics Options">
 				
