@@ -128,7 +128,7 @@
 				<cfif len(trim(arguments.description))>
 				description: "#HTMLEditFormat(arguments.description)#",
 				</cfif>
-				<cfif len(trim(arguments.streamer)) and arguments.streamer neq '/cfx/st'>
+				<cfif len(trim(arguments.streamer))>
 				provider: "rtmp",
 				streamer: encodeURI("#arguments.streamer#"),
 				</cfif>

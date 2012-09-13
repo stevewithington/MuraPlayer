@@ -103,8 +103,14 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		};
 
 		// Amazon CloudFront + Streaming
-		// we need to append '/cfx/st' to it for Amazon CloudFront streaming
-		local.streamer = 'rtmp://' & $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
+		local.streamer = '';
+		if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
+			// we need to append '/cfx/st' to it for Amazon CloudFront streaming
+			local.streamer = $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
+			if ( left(local.streamer, 4) != 'rtmp' ) {
+				local.streamer = 'rtmp://' & local.streamer;
+			};
+		};
 
 		// Player
 		local.player = dspJWPlayer(
@@ -199,6 +205,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		local.player = dspJWPlayer(
 			playlist = local.playlist
+			,streamer = ''
 			,mediaid = $.content('contentid')
 			,image = local.image
 			,width = local.width
@@ -387,7 +394,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 					// File
 					local.file = local.isYouTube
 						? local.item.getValue('muraPlayerYouTubeURL') 
-						: getFileURL(local.item.getValue('muraPlayerFile'), true);
+						: getFileURL(local.item.getValue('muraPlayerFile'));
+
+					// Streaming
+					local.streamer = !local.isYouTube && len(trim($.siteConfig('muraPlayerStreamURL'))) ? 'rtmp://#$.siteConfig('muraPlayerStreamURL')#/cfx/st' : '';
 
 					// Image
 					local.image = $.getURLForImage(
@@ -413,6 +423,8 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 							,'description' = local.item.getValue('muraPlayerDescription')
 							,'link' = local.item.getURL(complete=true)
 							,'gapro.hidden' = local.item.getValue('muraPlayerGAProHidden')
+							,'streamer' = local.streamer
+							,'mediaid' = local.item.getValue('contentid')
 						}
 					);
 
@@ -644,7 +656,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	public any function getMuraPlayerDefaultImage(string type='') output=false {
 		switch(arguments.type) {
 			case 'sound' :
-				return getPluginPath() & 'assets/images/sound_noimage.jpg';
+				return getPluginPath() & 'assets/images/sound_noimage.png';
 				break;
 			default :
 				return getPluginPath() & 'assets/images/video_noimage.png';
@@ -660,7 +672,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		return ReReplace(arguments.str, '\b(\w)', '\u\1', 'ALL');
 	}
 
-	public string function getFileURL(string fileid='', string method='inline', boolean isForPlaylist=false) output=false {
+	public string function getFileURL(string fileid='', string method='inline') output=false {
 		var local = {};
 		local.fileURL = '';
 		local.rsFileData = getBean('fileManager').read(arguments.fileid);
@@ -691,9 +703,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 					// example Amazon CloudFront Domain Name: d3uo0mcmxgzzlk.cloudfront.net
 					local.cloudurl = $.siteConfig('muraPlayerCloudURL');
 					if ( len(trim(local.cloudurl)) ) {
-						// the cloudurl shouldn't contain http/https, but if it does, we don't want to add the scheme/protocol again.
+						// just in case the cloud url doesn't contain http or https, we'll use whatever scheme the user is using
 						if ( left(local.cloudurl, 4) != 'http' ) {
-							local.cloudurl = getPageContext().getRequest().getScheme() & '//' & local.cloudurl;
+							local.cloudurl = getPageContext().getRequest().getScheme() & '://' & local.cloudurl;
 						};
 						if ( right(local.cloudurl, 1) != '/' ) {
 							local.cloudurl = local.cloudurl & '/';
@@ -701,7 +713,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 						local.baseurl = local.cloudurl;
 					};
 
-					if ( !arguments.isForPlaylist && len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
+					if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
 						// we don't need to provide the full url if we're streaming since we're going to provide a streaming url instead
 						local.baseurl = '';
 					};
