@@ -1,6 +1,6 @@
 #MuraPlayer TM
 
-Version 0.1 Alpha
+Version 1.0
 
 This is a [Mura CMS](http://getmura.com) plugin that wraps the [JW Player TM](http://www.longtailvideo.com/players) for Flash and HTML5.
 
@@ -28,6 +28,6 @@ For corporate use or if you're planning to generate revenue from your site (e.g.
 
 ##Tested With
 
-* Mura CMS Core Version 5.6.5004
+* Mura CMS Core Version 5.6.5010
 * Adobe ColdFusion 9.0.1
 * Railo 3.3.1
