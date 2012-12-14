@@ -29,7 +29,7 @@
 
 	// flashplayer
 	if ( !Len(Trim(arguments.flashplayer)) ) {
-		local.player = toBoolean($.siteConfig('muraPlayerIncludeViral')) ? 'player-viral.swf' : 'player.swf';
+		local.player = toBoolean(local.$.siteConfig('muraPlayerIncludeViral')) ? 'player-viral.swf' : 'player.swf';
 		local.flashplayer = getPluginPath() & 'assets/players/jwplayer/' & local.player;
 	} else {
 		local.flashplayer = arguments.flashplayer;

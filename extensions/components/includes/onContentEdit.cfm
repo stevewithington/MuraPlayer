@@ -25,7 +25,7 @@
 	<div id="customUIWrapper">
 		<dl>
 			<dt><label for="muraPlayerYouTubeURL">YouTube URL</label></dt>
-			<dd><input name="muraPlayerYouTubeURL" type="text" value="#$.content('muraPlayerYouTubeURL')#" class="textLong" /></dd>
+			<dd><input name="muraPlayerYouTubeURL" type="text" value="#local.$.content('muraPlayerYouTubeURL')#" class="textLong" /></dd>
 
 			<cfif YesNoFormat($.siteConfig('muraPlayerSkinDefaultEnforce'))>
 				<cfset skinDisplay = 'none'>
