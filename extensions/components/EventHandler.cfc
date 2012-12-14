@@ -52,18 +52,22 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 	public void function onSiteRequestStart(required struct $) output=false {
 		var local = {};
-		arguments.$.setCustomMuraScopeKey('muraPlayer', this);
-		set$(arguments.$);
+		var $ = arguments.$;
+		$.setCustomMuraScopeKey('muraPlayer', this);
+		set$($);
 	}
 	
 	public void function onRenderStart(required struct $) output=false {
 		var local = {};
-		set$(arguments.$);
-		arguments.$.loadJSLib();
+		var $ = arguments.$;
+		$.loadJSLib();
+		set$($);
 	}
 
 	public any function onPageMuraPlayerBodyRender(required struct $) output=false {
 		var local = {};
+		var $ = arguments.$;
+		set$($);
 
 		// Content Body
 		local.body = $.setDynamicContent($.content('body'));
@@ -161,6 +165,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	*/
 	public any function onPortalMuraPlaylistBodyRender(required struct $) output=false {
 		var local = {};
+		var $ = arguments.$;
+		set$($);
+
 		// Content Body
 		local.body = $.setDynamicContent($.content('body'));
 
@@ -244,6 +251,8 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// Possibly create a Custom UI in future version
 	// public any function onContentEdit(required struct $) output=false {
 	// 	var local = {};
+	//	var $ = arguments.$;
+	//	set$($);
 	// 	savecontent variable='local.str' {
 	// 		include 'includes/onContentEdit.cfm';
 	// 	};
@@ -332,6 +341,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,streamer='rtmp://#$.siteConfig('muraPlayerStreamURL')#/cfx/st'
 	) output=false {
 		var local = {};
+		var $ = get$();
 		if ( !Len(Trim(arguments.file)) && ( arguments.playlist == '[]' || arguments.playlist == '') ) {
 			return '';
 		};
@@ -345,6 +355,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// you can also pass in any of the arguments available for dspJWPlayer()
 	public any function dspJWPlaylist() output=false {
 		var local = {};
+		var $ = get$();
 		// allow for configured display object in future version
 		local.params = IsJSON($.event('objectParams')) ? DeSerializeJSON($.event('objectParams')) : {};
 		local.defaultParams = {
@@ -375,11 +386,12 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	public any function getJWPlaylist(
 		listContentIDs=''
 		,listDelim=','
-		,width='#ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x')#'
-		,height='#ListLast($.siteConfig('muraPlayerDimensionsDefault'), 'x')#'
+		,width='#ListFirst(get$().siteConfig('muraPlayerDimensionsDefault'), 'x')#'
+		,height='#ListLast(get$().siteConfig('muraPlayerDimensionsDefault'), 'x')#'
 		,muraPlayersBean='#getMuraPlayersBean()#'
 	) output=false {
 		var local = {};
+		var $ = get$();
 		local.playlist = [];
 		local.it = arguments.muraPlayersBean.getIterator();
 
@@ -441,9 +453,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,maxItems='0'
 		,showNavOnly=true
 		,showChildrenOnly=false
-		,parentContentID='#$.content('contentid')#'
+		,parentContentID='#get$().content('contentid')#'
 	) output=false {
 		var local = {};
+		var $ = get$();
 		
 		// create a dynamic feed of Page/MuraPlayer subtypes
 		local.fBean = $.getBean('feed');
@@ -664,7 +677,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public string function getPluginPath() output=false {
-		return $.globalConfig('context') & '/plugins/' & pluginConfig.getDirectory() & '/';
+		return get$().globalConfig('context') & '/plugins/' & pluginConfig.getDirectory() & '/';
 	}
 
 	// capitalize all words in the string
@@ -681,14 +694,14 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 			return '';
 		} else {
 
-			switch( $.globalConfig('filestore') ) {
+			switch( get$().globalConfig('filestore') ) {
 
 				case 'database' : 
 					Throw(type='InvalidData',message='Filestore setting of "database" not supported.');
 					break;
 
 				case 'filedir' :
-					local.fileURL = '#$.globalConfig('context')#/#local.rsFileData.siteid#/cache/file/#local.rsFileData.fileid#.#local.rsFileData.fileExt#';
+					local.fileURL = '#get$().globalConfig('context')#/#local.rsFileData.siteid#/cache/file/#local.rsFileData.fileid#.#local.rsFileData.fileExt#';
 					break;
 	
 				// S3 = files are stored on Amazon S3
@@ -697,11 +710,11 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 				case 'S3' :
 					local.file = local.rsFileData.siteid & '/' & local.rsFileData.fileid & '.' & local.rsFileData.fileext;
 
-					local.baseurl	= getPageContext().getRequest().getScheme() & '://s3.amazonaws.com/' & ListLast($.globalConfig('fileStoreAccessInfo'),'^') & '/';
+					local.baseurl	= getPageContext().getRequest().getScheme() & '://s3.amazonaws.com/' & ListLast(get$().globalConfig('fileStoreAccessInfo'),'^') & '/';
 
 					// if a cloudurl exists, let's use it
 					// example Amazon CloudFront Domain Name: d3uo0mcmxgzzlk.cloudfront.net
-					local.cloudurl = $.siteConfig('muraPlayerCloudURL');
+					local.cloudurl = get$().siteConfig('muraPlayerCloudURL');
 					if ( len(trim(local.cloudurl)) ) {
 						// just in case the cloud url doesn't contain http or https, we'll use whatever scheme the user is using
 						if ( left(local.cloudurl, 4) != 'http' ) {
@@ -713,7 +726,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 						local.baseurl = local.cloudurl;
 					};
 
-					if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
+					if ( len(trim(get$().siteConfig('muraPlayerStreamURL'))) ) {
 						// we don't need to provide the full url if we're streaming since we're going to provide a streaming url instead
 						local.baseurl = '';
 					};
