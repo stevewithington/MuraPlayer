@@ -52,54 +52,52 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 	public void function onSiteRequestStart(required struct $) output=false {
 		var local = {};
-		var $ = arguments.$;
-		$.setCustomMuraScopeKey('muraPlayer', this);
-		set$($);
+		arguments.$.setCustomMuraScopeKey('muraPlayer', this);
+		set$(arguments.$);
 	}
 	
 	public void function onRenderStart(required struct $) output=false {
 		var local = {};
-		var $ = arguments.$;
-		$.loadJSLib();
-		set$($);
+		arguments.$.loadJSLib();
+		set$(arguments.$);
 	}
 
 	public any function onPageMuraPlayerBodyRender(required struct $) output=false {
 		var local = {};
-		var $ = arguments.$;
-		set$($);
+		set$(arguments.$);
+		local.$ = arguments.$;
 
 		// Content Body
-		local.body = $.setDynamicContent($.content('body'));
+		local.body = local.$.setDynamicContent(local.$.content('body'));
 
 		// Skin
-		local.skin = $.content('muraPlayerSkin');
+		local.skin = local.$.content('muraPlayerSkin');
 		if ( local.skin == 'siteDefault' ) {
-			local.skin = $.siteConfig('muraPlayerSkinDefault');
+			local.skin = local.$.siteConfig('muraPlayerSkinDefault');
 		};
 
 		// Width x Height
-		if ( $.content('muraPlayerDimensions') == 'default' ) {
-			local.width = ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x');
-			local.height = ListLast($.siteConfig('muraPlayerDimensionsDefault'), 'x');
+		if ( local.$.content('muraPlayerDimensions') == 'default' ) {
+			local.width = ListFirst(local.$.siteConfig('muraPlayerDimensionsDefault'), 'x');
+			local.height = ListLast(local.$.siteConfig('muraPlayerDimensionsDefault'), 'x');
 		} else {
-			local.width = ListFirst($.content('muraPlayerDimensions'), 'x');
-			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
+			local.width = ListFirst(local.$.content('muraPlayerDimensions'), 'x');
+			local.height = ListLast(local.$.content('muraPlayerDimensions'), 'x');
 		};
 
-		if ( !ListFindNoCase('over,none', $.content('muraPlayerControlbarPosition')) ) {
+		if ( !ListFindNoCase('over,none', local.$.content('muraPlayerControlbarPosition')) ) {
 			local.height = local.height + getSkinHeight(local.skin);
 		};
 
 		// File
-		local.file = IsValid('url', $.content('muraPlayerYouTubeURL')) ? $.content('muraPlayerYouTubeURL') : getFileURL($.content('muraPlayerFile'));
+		local.file = IsValid('url', local.$.content('muraPlayerYouTubeURL')) ? local.$.content('muraPlayerYouTubeURL') : getFileURL(local.$.content('muraPlayerFile'));
 
 		if ( !Len(Trim(local.file)) ) {
-			local.file = $.getURLForImage(fileid=$.content('muraPlayerFile'),width=local.width,height=local.height);
+			local.file = local.$.getURLForImage(fileid=local.$.content('muraPlayerFile'),width=local.width,height=local.height);
 		};
 
 		// Image
-		local.image = $.getURLForImage(fileid=$.content('fileid'),width=local.width,height=local.height);
+		local.image = local.$.getURLForImage(fileid=local.$.content('fileid'),width=local.width,height=local.height);
 
 		// If media file is an image and no associated image exists, use media file
 		if ( !Len(Trim(local.image)) && ListFindNoCase('jpg,jpeg,png,gif', ListLast(local.file, '.')) ) {
@@ -108,9 +106,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		// Amazon CloudFront + Streaming
 		local.streamer = '';
-		if ( len(trim($.siteConfig('muraPlayerStreamURL'))) ) {
+		if ( len(trim(local.$.siteConfig('muraPlayerStreamURL'))) ) {
 			// we need to append '/cfx/st' to it for Amazon CloudFront streaming
-			local.streamer = $.siteConfig('muraPlayerStreamURL') & '/cfx/st';
+			local.streamer = local.$.siteConfig('muraPlayerStreamURL') & '/cfx/st';
 			if ( left(local.streamer, 4) != 'rtmp' ) {
 				local.streamer = 'rtmp://' & local.streamer;
 			};
@@ -120,39 +118,39 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		local.player = dspJWPlayer(
 			file = local.file
 			,streamer = local.streamer
-			,mediaid = $.content('contentid')
+			,mediaid = local.$.content('contentid')
 			,image = local.image
 			,width = local.width
 			,height = local.height
 			,skin = local.skin
-			,title = $.content('title')
-			,description = $.content('muraPlayerDescription')
-			,controlbarposition = $.content('muraPlayerControlbarPosition')
-			,controlbaridlehide = $.content('muraPlayerControlbarIdleHide')
-			,autostart = $.content('muraPlayerAutoStart')
-			,mute = $.content('muraPlayerMute')
-			,displayshowmute = $.content('muraPlayerShowMute')
-			,repeat = $.content('muraPlayerRepeat')
-			,stretching = $.content('muraPlayerStretching')
-			,volume = Val($.content('muraPlayerVolume'))
-			,allowsharing = $.content('muraPlayerAllowSharing')
-			,sharingurl = $.content('url')
-			,allowgoogleplus = $.content('muraPlayerAllowGooglePlus')
-			,allowfacebooklike = $.content('muraPlayerAllowFacebookLike')
-			,usegapro = $.siteConfig('muraPlayerUseGAPro')
-			,gaprotrackstarts = $.siteConfig('muraPlayerGAProTrackStarts')
-			,gaprotrackpercentage = $.siteConfig('muraPlayerGAProTrackPercentage')
-			,gaprotracktime = $.siteConfig('muraPlayerGAProTrackTime')
-			,gaprohidden = $.content('muraPlayerGAProHidden')
-			,uselightsout = $.siteConfig('muraPlayerUseLightsOut')
-			,lightsoutdockicon = $.siteConfig('muraPlayerLightsOutDockIcon')
-			,lightsoutopacity = $.siteConfig('muraPlayerLightsOutOpacity')
-			,lightsoutbgcolor = $.siteconfig('muraPlayerLightsOutBGColor')
-			,lightsouttime = $.siteconfig('muraPlayerLightsOutTime')
-			,lightsoutonidle = $.siteconfig('muraPlayerLightsOutOnIdle')
-			,lightsoutonplay = $.siteconfig('muraPlayerLightsOutOnPlay')
-			,lightsoutonpause = $.siteconfig('muraPlayerLightsOutOnPause')
-			,lightsoutoncomplete = $.siteconfig('muraPlayerLightsOutOnComplete')
+			,title = local.$.content('title')
+			,description = local.$.content('muraPlayerDescription')
+			,controlbarposition = local.$.content('muraPlayerControlbarPosition')
+			,controlbaridlehide = local.$.content('muraPlayerControlbarIdleHide')
+			,autostart = local.$.content('muraPlayerAutoStart')
+			,mute = local.$.content('muraPlayerMute')
+			,displayshowmute = local.$.content('muraPlayerShowMute')
+			,repeat = local.$.content('muraPlayerRepeat')
+			,stretching = local.$.content('muraPlayerStretching')
+			,volume = Val(local.$.content('muraPlayerVolume'))
+			,allowsharing = local.$.content('muraPlayerAllowSharing')
+			,sharingurl = local.$.content('url')
+			,allowgoogleplus = local.$.content('muraPlayerAllowGooglePlus')
+			,allowfacebooklike = local.$.content('muraPlayerAllowFacebookLike')
+			,usegapro = local.$.siteConfig('muraPlayerUseGAPro')
+			,gaprotrackstarts = local.$.siteConfig('muraPlayerGAProTrackStarts')
+			,gaprotrackpercentage = local.$.siteConfig('muraPlayerGAProTrackPercentage')
+			,gaprotracktime = local.$.siteConfig('muraPlayerGAProTrackTime')
+			,gaprohidden = local.$.content('muraPlayerGAProHidden')
+			,uselightsout = local.$.siteConfig('muraPlayerUseLightsOut')
+			,lightsoutdockicon = local.$.siteConfig('muraPlayerLightsOutDockIcon')
+			,lightsoutopacity = local.$.siteConfig('muraPlayerLightsOutOpacity')
+			,lightsoutbgcolor = local.$.siteconfig('muraPlayerLightsOutBGColor')
+			,lightsouttime = local.$.siteconfig('muraPlayerLightsOutTime')
+			,lightsoutonidle = local.$.siteconfig('muraPlayerLightsOutOnIdle')
+			,lightsoutonplay = local.$.siteconfig('muraPlayerLightsOutOnPlay')
+			,lightsoutonpause = local.$.siteconfig('muraPlayerLightsOutOnPause')
+			,lightsoutoncomplete = local.$.siteconfig('muraPlayerLightsOutOnComplete')
 		);
 
 		return local.player & local.body;
@@ -165,38 +163,38 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	*/
 	public any function onPortalMuraPlaylistBodyRender(required struct $) output=false {
 		var local = {};
-		var $ = arguments.$;
-		set$($);
+		set$(arguments.$);
+		local.$ = arguments.$;
 
 		// Content Body
-		local.body = $.setDynamicContent($.content('body'));
+		local.body = local.$.setDynamicContent(local.$.content('body'));
 
 		// MuraPlayersBean 
 		local.muraPlayersBean = getMuraPlayersBean(
-			sortBy=$.content('sortBy')
-			,sortDirection=$.content('sortDirection')
-			,maxItems=$.globalConfig('maxPortalItems')
+			sortBy=local.$.content('sortBy')
+			,sortDirection=local.$.content('sortDirection')
+			,maxItems=local.$.globalConfig('maxPortalItems')
 			,showNavOnly=true
-			,showChildrenOnly=$.content('muraPlaylistShowChildrenOnly')
-			,parentContentID=$.content('contentid')
+			,showChildrenOnly=local.$.content('muraPlaylistShowChildrenOnly')
+			,parentContentID=local.$.content('contentid')
 		);
 
 		// Skin
-		local.skin = $.content('muraPlayerSkin');
+		local.skin = local.$.content('muraPlayerSkin');
 		if ( local.skin == 'siteDefault' ) {
-			local.skin = $.siteConfig('muraPlayerSkinDefault');
+			local.skin = local.$.siteConfig('muraPlayerSkinDefault');
 		};
 
 		// Width x Height
-		if ( $.content('muraPlayerDimensions') == 'default' ) {
-			local.width = ListFirst($.siteConfig('muraPlayerDimensionsDefault'), 'x');
-			local.height = ListLast($.siteConfig('muraPlayerDimensionsDefault'), 'x');
+		if ( local.$.content('muraPlayerDimensions') == 'default' ) {
+			local.width = ListFirst(local.$.siteConfig('muraPlayerDimensionsDefault'), 'x');
+			local.height = ListLast(local.$.siteConfig('muraPlayerDimensionsDefault'), 'x');
 		} else {
-			local.width = ListFirst($.content('muraPlayerDimensions'), 'x');
-			local.height = ListLast($.content('muraPlayerDimensions'), 'x');
+			local.width = ListFirst(local.$.content('muraPlayerDimensions'), 'x');
+			local.height = ListLast(local.$.content('muraPlayerDimensions'), 'x');
 		};
 
-		if ( !ListFindNoCase('over,none', $.content('muraPlayerControlbarPosition')) ) {
+		if ( !ListFindNoCase('over,none', local.$.content('muraPlayerControlbarPosition')) ) {
 			local.height = local.height + getSkinHeight(local.skin);
 		};
 
@@ -208,42 +206,42 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		);
 
 		// Image
-		local.image = $.getURLForImage(fileid=$.content('fileid'),width=local.width,height=local.height);
+		local.image = local.$.getURLForImage(fileid=local.$.content('fileid'),width=local.width,height=local.height);
 
 		local.player = dspJWPlayer(
 			playlist = local.playlist
 			,streamer = ''
-			,mediaid = $.content('contentid')
+			,mediaid = local.$.content('contentid')
 			,image = local.image
 			,width = local.width
 			,height = local.height
 			,skin = local.skin
-			,controlbarposition = $.content('muraPlayerControlbarPosition')
-			,controlbaridlehide = $.content('muraPlayerControlbarIdleHide')
-			,autostart = $.content('muraPlayerAutoStart')
-			,mute = $.content('muraPlayerMute')
-			,displayshowmute = $.content('muraPlayerShowMute')
-			,repeat = $.content('muraPlayerRepeat')
-			,stretching = $.content('muraPlayerStretching')
-			,volume = Val($.content('muraPlayerVolume'))
-			,useflow = $.content('muraPlaylistUseFlow')
-			,flowposition = $.content('muraPlaylistFlowPosition')
-			,allowsharing = $.content('muraPlayerAllowSharing')
-			,allowgoogleplus = $.content('muraPlayerAllowGooglePlus')
-			,allowfacebooklike = $.content('muraPlayerAllowFacebookLike')
-			,usegapro = $.siteConfig('muraPlayerUseGAPro')
-			,gaprotrackstarts = $.siteConfig('muraPlayerGAProTrackStarts')
-			,gaprotrackpercentage = $.siteConfig('muraPlayerGAProTrackPercentage')
-			,gaprotracktime = $.siteConfig('muraPlayerGAProTrackTime')
-			,uselightsout = $.siteConfig('muraPlayerUseLightsOut')
-			,lightsoutdockicon = $.siteConfig('muraPlayerLightsOutDockIcon')
-			,lightsoutopacity = $.siteConfig('muraPlayerLightsOutOpacity')
-			,lightsoutbgcolor = $.siteconfig('muraPlayerLightsOutBGColor')
-			,lightsouttime = $.siteconfig('muraPlayerLightsOutTime')
-			,lightsoutonidle = $.siteconfig('muraPlayerLightsOutOnIdle')
-			,lightsoutonplay = $.siteconfig('muraPlayerLightsOutOnPlay')
-			,lightsoutonpause = $.siteconfig('muraPlayerLightsOutOnPause')
-			,lightsoutoncomplete = $.siteconfig('muraPlayerLightsOutOnComplete')
+			,controlbarposition = local.$.content('muraPlayerControlbarPosition')
+			,controlbaridlehide = local.$.content('muraPlayerControlbarIdleHide')
+			,autostart = local.$.content('muraPlayerAutoStart')
+			,mute = local.$.content('muraPlayerMute')
+			,displayshowmute = local.$.content('muraPlayerShowMute')
+			,repeat = local.$.content('muraPlayerRepeat')
+			,stretching = local.$.content('muraPlayerStretching')
+			,volume = Val(local.$.content('muraPlayerVolume'))
+			,useflow = local.$.content('muraPlaylistUseFlow')
+			,flowposition = local.$.content('muraPlaylistFlowPosition')
+			,allowsharing = local.$.content('muraPlayerAllowSharing')
+			,allowgoogleplus = local.$.content('muraPlayerAllowGooglePlus')
+			,allowfacebooklike = local.$.content('muraPlayerAllowFacebookLike')
+			,usegapro = local.$.siteConfig('muraPlayerUseGAPro')
+			,gaprotrackstarts = local.$.siteConfig('muraPlayerGAProTrackStarts')
+			,gaprotrackpercentage = local.$.siteConfig('muraPlayerGAProTrackPercentage')
+			,gaprotracktime = local.$.siteConfig('muraPlayerGAProTrackTime')
+			,uselightsout = local.$.siteConfig('muraPlayerUseLightsOut')
+			,lightsoutdockicon = local.$.siteConfig('muraPlayerLightsOutDockIcon')
+			,lightsoutopacity = local.$.siteConfig('muraPlayerLightsOutOpacity')
+			,lightsoutbgcolor = local.$.siteconfig('muraPlayerLightsOutBGColor')
+			,lightsouttime = local.$.siteconfig('muraPlayerLightsOutTime')
+			,lightsoutonidle = local.$.siteconfig('muraPlayerLightsOutOnIdle')
+			,lightsoutonplay = local.$.siteconfig('muraPlayerLightsOutOnPlay')
+			,lightsoutonpause = local.$.siteconfig('muraPlayerLightsOutOnPause')
+			,lightsoutoncomplete = local.$.siteconfig('muraPlayerLightsOutOnComplete')
 		);
 		return local.player & local.body;
 	}
@@ -251,8 +249,8 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// Possibly create a Custom UI in future version
 	// public any function onContentEdit(required struct $) output=false {
 	// 	var local = {};
-	//	var $ = arguments.$;
-	//	set$($);
+	//	local.$ = arguments.$;
+	//	set$(arguments.$);
 	// 	savecontent variable='local.str' {
 	// 		include 'includes/onContentEdit.cfm';
 	// 	};
@@ -338,10 +336,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,flowposition=''
 		,flowsize=''
 		,flashplayer=''
-		,streamer='rtmp://#$.siteConfig('muraPlayerStreamURL')#/cfx/st'
+		,streamer='rtmp://#get$().siteConfig('muraPlayerStreamURL')#/cfx/st'
 	) output=false {
 		var local = {};
-		var $ = get$();
+		local.$ = get$();
 		if ( !Len(Trim(arguments.file)) && ( arguments.playlist == '[]' || arguments.playlist == '') ) {
 			return '';
 		};
@@ -355,9 +353,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// you can also pass in any of the arguments available for dspJWPlayer()
 	public any function dspJWPlaylist() output=false {
 		var local = {};
-		var $ = get$();
+		local.$ = get$();
 		// allow for configured display object in future version
-		local.params = IsJSON($.event('objectParams')) ? DeSerializeJSON($.event('objectParams')) : {};
+		local.params = IsJSON(local.$.event('objectParams')) ? DeSerializeJSON(local.$.event('objectParams')) : {};
 		local.defaultParams = {
 			playlist = getJWPlaylist()
 		};
@@ -391,7 +389,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,muraPlayersBean='#getMuraPlayersBean()#'
 	) output=false {
 		var local = {};
-		var $ = get$();
+		local.$ = get$();
 		local.playlist = [];
 		local.it = arguments.muraPlayersBean.getIterator();
 
@@ -409,10 +407,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 						: getFileURL(local.item.getValue('muraPlayerFile'));
 
 					// Streaming
-					local.streamer = !local.isYouTube && len(trim($.siteConfig('muraPlayerStreamURL'))) ? 'rtmp://#$.siteConfig('muraPlayerStreamURL')#/cfx/st' : '';
+					local.streamer = !local.isYouTube && len(trim(local.$.siteConfig('muraPlayerStreamURL'))) ? 'rtmp://#local.$.siteConfig('muraPlayerStreamURL')#/cfx/st' : '';
 
 					// Image
-					local.image = $.getURLForImage(
+					local.image = local.$.getURLForImage(
 						fileid=local.item.getValue('fileid')
 						,width=arguments.width
 						,height=arguments.height
@@ -456,10 +454,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		,parentContentID='#get$().content('contentid')#'
 	) output=false {
 		var local = {};
-		var $ = get$();
+		local.$ = get$();
 		
 		// create a dynamic feed of Page/MuraPlayer subtypes
-		local.fBean = $.getBean('feed');
+		local.fBean = local.$.getBean('feed');
 		local.fBean.setName('MuraPlayers');
 		local.fBean.setSortBy(arguments.sortBy);
 		local.fBean.setSortDirection(arguments.sortDirection);
@@ -467,7 +465,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		local.fBean.setShowNavOnly(toBoolean(arguments.showNavOnly));
 
 		// Show Children Only?
-		if ( ( $.content('type') == 'Portal' && $.content('subtype') == 'MuraPlaylist' && toBoolean($.content('muraPlaylistShowChildrenOnly')) ) || toBoolean(arguments.showChildrenOnly) && IsValid('uuid', arguments.parentContentID) ) {
+		if ( ( local.$.content('type') == 'Portal' && local.$.content('subtype') == 'MuraPlaylist' && toBoolean(local.$.content('muraPlaylistShowChildrenOnly')) ) || toBoolean(arguments.showChildrenOnly) && IsValid('uuid', arguments.parentContentID) ) {
 			local.fBean.addAdvancedParam(
 				relationship='AND'
 				, field='tcontent.parentid'
@@ -525,7 +523,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// Player Skins
 	private void function setPlayerSkinsOptionList() output=false {
 		var local = {};
-		var delim = $.globalConfig('fileDelim');
+		var delim = get$().globalConfig('fileDelim');
 		local.path = pluginConfig.getFullPath() & delim & 'assets' & delim & 'players' & delim & 'jwplayer' & delim & 'skins';
 		variables.playerSkinsOptionList = REReplaceNoCase(
 			ArrayToList(DirectoryList(local.path,false,'name','*.zip','directory ASC'),'^')
@@ -636,7 +634,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		var local = {};
 		local.data  = {};
 		local.tableCount = 0;
-		local.db = new dbinfo(datasource=$.globalConfig('datasource'));
+		local.db = new dbinfo(datasource=get$().globalConfig('datasource'));
 		local.rsDBTables = local.db.tables();
 		for ( local.i=1; local.i <= local.rsDBTables.recordcount; local.i++ ) {
 			local.table = local.rsDBTables["TABLE_NAME"][i];
@@ -644,10 +642,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 				local.tableCount++;
 				local.data[local.table] = {};
 				// schema
-				local.rsTableFields = new dbinfo(datasource=$.globalConfig('datasource'),table=local.table).columns();
+				local.rsTableFields = new dbinfo(datasource=get$().globalConfig('datasource'),table=local.table).columns();
 				local.data[local.table].schema = local.rsTableFields;
 				// data
-				local.rsData = new Query(datasource=$.globalConfig('datasource'),sql='SELECT * FROM #local.table#').execute().getResult();
+				local.rsData = new Query(datasource=get$().globalConfig('datasource'),sql='SELECT * FROM #local.table#').execute().getResult();
 				local.data[local.table].data = local.rsData;
 			};
 		};
