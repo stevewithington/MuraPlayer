@@ -23,12 +23,6 @@
 			<p><em>Version: #pluginConfig.getVersion()#<br />
 			Author: Stephen J. Withington, Jr. &mdash; <a href="http://blueriver.com" target="_blank">Blue River Interactive</a></em></p>
 
-			<h3>End User License Agreement (EULA)</h3>
-			<p><em><a href="license.txt" target="_blank">View Printer-Friendly Version &gt;</a></em></p>
-			<div class="notice">
-				<p><textarea readonly="readonly" name="EULA" id="EULA" label="End User License Agreement (EULA)" cols="77" rows="10"><cfinclude template="license.txt" /></textarea></p>
-			</div>
-
 			<h3>Supported File Formats</h3>
 			<h4>Flash Playback</h4>
 			<ul>

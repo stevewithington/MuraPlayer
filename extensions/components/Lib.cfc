@@ -1,14 +1,10 @@
-<cfscript>
-/**
-* 
-* This file is part of MuraPlayer TM
-*
-* Copyright 2010-2012 Stephen J. Withington, Jr.
-* Licensed under the Apache License, Version v2.0
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-*/
-</cfscript>
+<!---
+	This file is part of MuraPlayer TM
+
+	Copyright 2010-2012 Stephen J. Withington, Jr.
+	Licensed under the Apache License, Version v2.0
+	http://www.apache.org/licenses/LICENSE-2.0
+--->
 <cfcomponent output="false">
 
 	<cffunction name="wddx" access="public" returntype="any" output="false">

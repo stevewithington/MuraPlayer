@@ -147,10 +147,9 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 
 	/**
-	* Portal / MuraPlaylist
-	* 
+	* Folder / MuraPlaylist
 	*/
-	public any function onPortalMuraPlaylistBodyRender(required struct $) output=false {
+	public any function onFolderMuraPlaylistBodyRender(required struct $) output=false {
 		var local = {};
 		set$(arguments.$);
 		local.$ = arguments.$;
@@ -562,6 +561,10 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	// ---------------------------------------------------------------------
 	// HELPERS
 	// ---------------------------------------------------------------------
+
+	public any function get$() output=false {
+		return StructKeyExists(variables, '$') ? variables.$ : application.serviceFactory.getBean('$').init(session.siteid);
+	}
 
 	public any function getSkinHeight(string skin='') output=false {
 		switch( arguments.skin ) {
