@@ -525,7 +525,7 @@
 				FOLDER / MuraPlaylist
 
 		--->
-		<extension type="Folder" subType="MuraPlaylist" hasAvailableSubTypes="1" availableSubTypes="Page/MuraPlayer">
+		<extension type="Folder" subType="MuraPlaylist" availableSubTypes="Page/MuraPlayer">
 			<attributeset name="MuraPlaylist Options" container="Basic">
 
 				<attribute 
