@@ -522,16 +522,16 @@
 
 		<!--- ///////////////////////////////////////////////////////////////////////////
 
-				PORTAL / MuraPlaylist
+				FOLDER / MuraPlaylist
 
 		--->
-		<extension type="Portal" subType="MuraPlaylist">
+		<extension type="Folder" subType="MuraPlaylist" hasAvailableSubTypes="1" availableSubTypes="Page/MuraPlayer">
 			<attributeset name="MuraPlaylist Options" container="Basic">
 
 				<attribute 
 					name="muraPlaylistShowChildrenOnly"
-					label="Show only children of this Portal?"
-					hint="Should this playlist ONLY inlcude MuraPlayers that are direct children of this Portal?"
+					label="Show only children of this Folder?"
+					hint="Should this playlist ONLY inlcude MuraPlayers that are direct children of this Folder?"
 					type="RadioGroup"
 					defaultValue="true"
 					required="false"
