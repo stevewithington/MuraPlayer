@@ -82,11 +82,19 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		local.file = IsValid('url', local.$.content('muraPlayerYouTubeURL')) ? local.$.content('muraPlayerYouTubeURL') : getFileURL(local.$.content('muraPlayerFile'));
 
 		if ( !Len(Trim(local.file)) ) {
-			local.file = local.$.getURLForImage(fileid=local.$.content('muraPlayerFile'),width=local.width,height=local.height);
+			local.file = local.$.getURLForImage(
+				fileid = local.$.content('muraPlayerFile')
+				,width = local.width
+				,height = local.height
+			);
 		};
 
 		// Image
-		local.image = local.$.getURLForImage(fileid=local.$.content('fileid'),width=local.width,height=local.height);
+		local.image = local.$.getURLForImage(
+			fileid = local.$.content('fileid')
+			,width = local.width
+			,height = local.height
+		);
 
 		// If media file is an image and no associated image exists, use media file
 		if ( !Len(Trim(local.image)) && ListFindNoCase('jpg,jpeg,png,gif', ListLast(local.file, '.')) ) {
@@ -159,12 +167,12 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		// MuraPlayersBean 
 		local.muraPlayersBean = getMuraPlayersBean(
-			sortBy=local.$.content('sortBy')
-			,sortDirection=local.$.content('sortDirection')
-			,maxItems=local.$.globalConfig('maxPortalItems')
-			,showNavOnly=true
-			,showChildrenOnly=local.$.content('muraPlaylistShowChildrenOnly')
-			,parentContentID=local.$.content('contentid')
+			sortBy = local.$.content('sortBy')
+			,sortDirection = local.$.content('sortDirection')
+			,maxItems = local.$.globalConfig('maxPortalItems')
+			,showNavOnly = true
+			,showChildrenOnly = local.$.content('muraPlaylistShowChildrenOnly')
+			,parentContentID = local.$.content('contentid')
 		);
 
 		// Skin
@@ -188,14 +196,19 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 
 		// Playlist
 		local.playlist = getJWPlaylist(
-			width=local.width
-			,height=local.height
+			width = local.width
+			,height = local.height
 			,muraPlayersBean = local.muraPlayersBean
 		);
 
 		// Image
-		local.image = local.$.getURLForImage(fileid=local.$.content('fileid'),width=local.width,height=local.height);
+		local.image = local.$.getURLForImage(
+			fileid = local.$.content('fileid')
+			,width = local.width
+			,height = local.height
+		);
 
+		// JW Player
 		local.player = dspJWPlayer(
 			playlist = local.playlist
 			,streamer = ''
@@ -231,6 +244,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 			,lightsoutonpause = local.$.siteconfig('muraPlayerLightsOutOnPause')
 			,lightsoutoncomplete = local.$.siteconfig('muraPlayerLightsOutOnComplete')
 		);
+
 		return local.player & local.body;
 	}
 
@@ -328,7 +342,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	) output=false {
 		var local = {};
 		local.$ = get$();
-		if ( !Len(Trim(arguments.file)) && ( arguments.playlist == '[]' || arguments.playlist == '') ) {
+		if ( !Len(Trim(arguments.file)) && ( arguments.playlist == '[]' || arguments.playlist == '' ) ) {
 			return '';
 		};
 		savecontent variable='local.str' {
@@ -489,11 +503,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public string function getPlayerDimensionsOptionList(boolean includeDefault=true) output=false {
-		if ( arguments.includeDefault ) {
-			return variables.playerDimensionsOptionList;
-		} else {
-			return ListDeleteAt(variables.playerDimensionsOptionList, 1, '^');
-		};
+		return arguments.includeDefault ? variables.playerDimensionsOptionList : ListDeleteAt(variables.playerDimensionsOptionList, 1, '^');
 	}
 
 	private void function setPlayerDimensionsOptionLabelList() output=false {
@@ -501,11 +511,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public string function getPlayerDimensionsOptionLabelList(boolean includeDefault=true) output=false {
-		if ( arguments.includeDefault ) {
-			return variables.playerDimensionsOptionLabelList;
-		} else {
-			return ListDeleteAt(variables.playerDimensionsOptionLabelList, 1, '^');
-		};
+		return arguments.includeDefault ? variables.playerDimensionsOptionLabelList : ListDeleteAt(variables.playerDimensionsOptionLabelList, 1, '^');
 	}
 
 	// Player Skins
@@ -522,11 +528,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public string function getPlayerSkinsOptionList(boolean includeSiteDefault=true) output=false {
-		if ( arguments.includeSiteDefault ) {
-			return 'siteDefault^default^' & variables.playerSkinsOptionList;
-		} else {
-			return 'default^' & variables.playerSkinsOptionList;
-		};
+		return arguments.includeSiteDefault ? 'siteDefault^default^' & variables.playerSkinsOptionList : 'default^' & variables.playerSkinsOptionList;
 	}
 
 	private void function setPlayerSkinsOptionLabelList() output=false {
@@ -534,11 +536,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 	}
 
 	public string function getPlayerSkinsOptionLabelList(boolean includeSiteDefault=true) output=false {
-		if ( arguments.includeSiteDefault ) {
-			return 'Use Skin From Site Settings^' & variables.playerSkinsOptionLabelList;
-		} else {
-			return variables.playerSkinsOptionLabelList;
-		};
+		return arguments.includeSiteDefault ? 'Use Skin From Site Settings^' & variables.playerSkinsOptionLabelList : variables.playerSkinsOptionLabelList;
 	}
 
 	private void function setPlayerVolumeOptionList() output=false {

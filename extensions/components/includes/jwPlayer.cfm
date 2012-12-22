@@ -25,7 +25,7 @@
 	};
 
 	// sharing link
-	if ( toBoolean(arguments.allowsharing) && !Len(Trim(arguments.sharinglink))) {
+	if ( toBoolean(arguments.allowsharing) && !Len(Trim(arguments.sharinglink)) ) {
 		arguments.sharinglink = getPageContext().getRequest().getRequestURL();
 		if ( len(trim(getPageContext().getRequest().getQueryString())) ) {
 			arguments.sharinglink = arguments.sharinglink & '?' & getPageContext().getRequest().getQueryString();

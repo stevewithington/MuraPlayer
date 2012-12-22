@@ -16,7 +16,7 @@
 		<package>MuraPlayer</package>
 		<directoryFormat>packageOnly</directoryFormat>
 		<loadPriority>5</loadPriority>
-		<version>1.0.7</version>
+		<version>1.0.8</version>
 		<provider>Blue River Interactive</provider>
 		<providerURL>http://blueriver.com</providerURL>
 		<category>Application</category>
