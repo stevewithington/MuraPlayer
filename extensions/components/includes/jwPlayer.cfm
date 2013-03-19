@@ -3,7 +3,7 @@
 * 
 * This file is part of MuraPlayer TM
 *
-* Copyright 2010-2012 Stephen J. Withington, Jr.
+* Copyright 2010-2013 Stephen J. Withington, Jr.
 * Licensed under the Apache License, Version v2.0
 * http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -22,15 +22,15 @@
 		local.flashplayer = getPluginPath() & 'assets/players/jwplayer/' & local.player;
 	} else {
 		local.flashplayer = arguments.flashplayer;
-	};
+	}
 
 	// sharing link
 	if ( toBoolean(arguments.allowsharing) && !Len(Trim(arguments.sharinglink)) ) {
 		arguments.sharinglink = getPageContext().getRequest().getRequestURL();
 		if ( len(trim(getPageContext().getRequest().getQueryString())) ) {
 			arguments.sharinglink = arguments.sharinglink & '?' & getPageContext().getRequest().getQueryString();
-		};
-	};
+		}
+	}
 
 	// sound file
 	if ( !len(trim(arguments.image)) && isSoundFile(arguments.file) ) {
@@ -39,7 +39,7 @@
 		arguments.controlbarposition = 'bottom';
 		arguments.dock = false;
 		arguments.icons = false;
-	};
+	}
 
 	// Playlist
 	if ( local.isPlaylist ) {
@@ -48,29 +48,29 @@
 
 		if ( !ListFindNoCase('bottom,top,right,left,over,none', arguments.playlistposition) || toBoolean(arguments.useflow) ) { 
 			arguments.playlistposition='none';
-		};
+		}
 
 		if ( ListFindNoCase('left,right', arguments.playlistposition) ) {
 			arguments.width = arguments.width + arguments.playlistsize;
 		} else if ( ListFindNoCase('top,bottom', arguments.playlistposition) ) {
 			arguments.height = arguments.height + arguments.playlistsize;
-		};
-	};
+		}
+	}
 
 	// Repeat
 	if ( !ListFindNoCase('none,list,always,single', arguments.repeat) ) {
 		arguments.repeat = 'none';
-	};
+	}
 
 	// Stretching
 	if ( !ListFindNoCase('none,exactfit,uniform,fill', arguments.stretching) ) {
 		arguments.stretching = 'fill';
-	};
+	}
 
 	// If media file is an image...eventually will have UI to accomodate this
 	if ( ListFindNoCase('jpg,jpeg,png,gif', ListLast(arguments.file, '.')) ) {
 		arguments.duration = 5;
-	};
+	}
 
 	// Plugin: FLOW
 	if ( toBoolean(arguments.useflow) ) {
@@ -83,12 +83,12 @@
 			} else if ( ListFindNoCase('top,bottom', arguments.flowposition) ) {
 				if ( !isNumeric(arguments.flowsize) ) {
 					arguments.flowsize=Val(arguments.height)/2;
-				};
+				}
 				// clicking media thumbnails is buggy with showtext on when positioned top/bottom
 				arguments.flowshowtext=false;
-			};
-		};
-	};
+			}
+		}
+	}
 </cfscript></cfsilent>
 <cfoutput>
 	<div class="muraPlayerOuterWrapper">
@@ -117,7 +117,7 @@
 				<cfif len(trim(arguments.description))>
 				description: "#HTMLEditFormat(arguments.description)#",
 				</cfif>
-				<cfif len(trim(arguments.streamer))>
+				<cfif len(trim(arguments.streamer)) and arguments.streamer neq 'rtmp:///cfx/st'>
 				provider: "rtmp",
 				streamer: encodeURI("#arguments.streamer#"),
 				</cfif>
