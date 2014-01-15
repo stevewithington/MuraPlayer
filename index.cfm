@@ -3,7 +3,7 @@
 * 
 * This file is part of MuraPlayer TM
 *
-* Copyright 2010-2013 Stephen J. Withington, Jr.
+* Copyright 2010-2014 Stephen J. Withington, Jr.
 * Licensed under the Apache License, Version v2.0
 * http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -59,7 +59,7 @@
 		
 			<h4>Upload Issues</h4>
 			<p>Please note, Mura CMS does NOT impose any kind of limit on your filesize uploads.  This means that if you're running into issues, there are probably limits being imposed by either your your CFML engine (e.g., Adobe ColdFusion, Railo, etc.), your webserver (IIS, apache, etc.), your web hosting company (e.g., software that they use to monitor their servers such as SeeFusion, etc.), your internet service provider (ISP), or possibly even your organization's network policies.  The point is, there's any nummber of places you may have to check.</p>
-			<p class="error"><strong>WARNING!!!</strong> Changing filesize post data is a security risk. For example, if someone wants to perform a Denial of Service (DOS) attack, you're just giving them an easy way to do it. So please keep this in mind before attempting to make any adjustments to default settings.</p>
+			<p class="alert alert-error"><strong>WARNING!!!</strong> Changing filesize post data is a security risk. For example, if someone wants to perform a Denial of Service (DOS) attack, you're just giving them an easy way to do it. So please keep this in mind before attempting to make any adjustments to default settings.</p>
 			<p>The information below is meant to help troubleshoot common problems with uploading large files.</p>
 
 			

@@ -3,7 +3,7 @@
 * 
 * This file is part of MuraPlayer TM
 *
-* Copyright 2010-2013 Stephen J. Withington, Jr.
+* Copyright 2010-2014 Stephen J. Withington, Jr.
 * Licensed under the Apache License, Version v2.0
 * http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -16,7 +16,7 @@
 		<package>MuraPlayer</package>
 		<directoryFormat>packageOnly</directoryFormat>
 		<loadPriority>5</loadPriority>
-		<version>1.0.8</version>
+		<version>1.0.9</version>
 		<provider>Blue River Interactive</provider>
 		<providerURL>http://blueriver.com</providerURL>
 		<category>Application</category>

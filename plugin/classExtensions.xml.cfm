@@ -3,7 +3,7 @@
 * 
 * This file is part of MuraPlayer TM
 *
-* Copyright 2010-2013 Stephen J. Withington, Jr.
+* Copyright 2010-2014 Stephen J. Withington, Jr.
 * Licensed under the Apache License, Version v2.0
 * http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -448,7 +448,7 @@
 				PAGE / MuraPlayer
 
 		--->
-		<extension type="Page" subType="MuraPlayer" hasBody="1">
+		<extension type="Page" subType="MuraPlayer" iconClass="icon-film" hasBody="1">
 
 			<attributeset name="MuraPlayer Options" container="Basic">
 
@@ -525,7 +525,7 @@
 				FOLDER / MuraPlaylist
 
 		--->
-		<extension type="Folder" subType="MuraPlaylist" availableSubTypes="Page/MuraPlayer">
+		<extension type="Folder" subType="MuraPlaylist" iconClass="icon-th-list" availableSubTypes="Page/MuraPlayer">
 			<attributeset name="MuraPlaylist Options" container="Basic">
 
 				<attribute 

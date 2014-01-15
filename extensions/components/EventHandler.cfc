@@ -2,7 +2,7 @@
 * 
 * This file is part of MuraPlayer TM
 *
-* Copyright 2010-2013 Stephen J. Withington, Jr.
+* Copyright 2010-2014 Stephen J. Withington, Jr.
 * Licensed under the Apache License, Version v2.0
 * http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -467,7 +467,7 @@ component extends="mura.plugin.pluginGenericEventHandler" accessors=true output=
 		local.fBean.setShowNavOnly(toBoolean(arguments.showNavOnly));
 
 		// Show Children Only?
-		if ( ( local.$.content('type') == 'Portal' && local.$.content('subtype') == 'MuraPlaylist' && toBoolean(local.$.content('muraPlaylistShowChildrenOnly')) ) || toBoolean(arguments.showChildrenOnly) && IsValid('uuid', arguments.parentContentID) ) {
+		if ( ( ListFindNoCase('Portal,Folder', local.$.content('type')) && local.$.content('subtype') == 'MuraPlaylist' && toBoolean(local.$.content('muraPlaylistShowChildrenOnly')) ) || toBoolean(arguments.showChildrenOnly) && IsValid('uuid', arguments.parentContentID) ) {
 			local.fBean.addAdvancedParam(
 				relationship='AND'
 				, field='tcontent.parentid'
